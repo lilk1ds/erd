@@ -19,7 +19,11 @@ class Cart(models.Model):
     def subtotal(self):
         return sum(item.total_price for item in self.items.all())
 
-    def add_products(self, product, product_size, quantity=1):
+    # Этот метод нужен для твоего AddToCartView
+    def add_product(self, product, product_size, quantity=1):
+        """
+        Добавляет продукт в корзину или увеличивает количество существующего.
+        """
         cart_item, created = CartItem.objects.get_or_create(
             cart=self,
             product=product,
@@ -30,6 +34,10 @@ class Cart(models.Model):
             cart_item.quantity += quantity
             cart_item.save()
         return cart_item
+
+    # Старый метод, можно оставить, если нужно
+    def add_products(self, product, product_size, quantity=1):
+        return self.add_product(product, product_size, quantity)
 
     def remove_item(self, item_id):
         try:
@@ -70,4 +78,4 @@ class CartItem(models.Model):
 
     @property
     def total_price(self):
-        return Decimal(str(self.product.price) * self.quantity)
+        return Decimal(str(self.product.price)) * self.quantity
