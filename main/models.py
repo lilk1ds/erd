@@ -11,7 +11,7 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         super().save(*args , **kwargs)
 
-    def __str_(self):
+    def __str__(self):
         return self.name
 
 class Size(models.Model):
@@ -21,7 +21,7 @@ class Size(models.Model):
         return self.name
 
 class ProductSize(models.Model):
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='product_size')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='product_sizes')
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     stock = models.PositiveIntegerField(default=0)
 
@@ -45,7 +45,7 @@ class Product(models.Model):
             self.slug = slugify(self.name)
         super().save(*args , **kwargs)
 
-    def __str_(self):
+    def __str__(self):
         return self.name
     
 class ProductImage(models.Model):
