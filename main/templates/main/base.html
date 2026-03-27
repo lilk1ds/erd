@@ -116,10 +116,10 @@
     <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-80 h-full bg-white z-50 md:hidden shadow-lg">
         <div class="p-6">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-lg font-bold tracking-tight">
+                <h2 class="text-lg font-bold tracking-tight test-left">
                     ENFANTS RICHES <br>
                     DÉPRIMÉS
-                </h2>   
+                </h2>
                 <button id="closeMenu" class="hamburger active">
                     <span></span>
                     <span></span>
@@ -149,8 +149,12 @@
             <div class="mt-8 space-y-4">
                 <a href="#" class="block text-sm font-medium text-gray-900 hover:text-gray-700 py-2">SEARCH</a>
                 
-                <a class="text-sm font-medium text-gray-900 uppercase hover:text-gray-600">
-                    ACCOUNT
+                <a href="{% url 'users:profile' %}" 
+                   hx-get="{% url 'users:profile' %}" 
+                   hx-target="#main-content" 
+                   hx-push-url="true"
+                   class="block text-sm font-medium text-gray-900 uppercase hover:text-gray-600">
+                   ACCOUNT
                 </a>
                 <a href="#" id="mobileCart" class="block text-sm font-medium text-gray-900 hover:text-gray-700 py-2">CART (0)</a>
             </div>
@@ -205,8 +209,12 @@
                             SEARCH
                         </button>
                     </div>
-                    <a class="text-sm font-medium text-gray-900 uppercase hover:text-gray-600">
-                        ACCOUNT
+                    <a href="{% url 'users:profile' %}" 
+                       hx-get="{% url 'users:profile' %}" 
+                       hx-target="#main-content" 
+                       hx-push-url="true"
+                       class="text-sm font-medium text-gray-900 uppercase hover:text-gray-600">
+                       ACCOUNT
                     </a>
                     <a href="#" id="desktopCart" class="text-sm font-medium text-gray-900 hover:text-gray-700">CART (0)</a>
                 </div>
@@ -282,7 +290,7 @@
                 closeMobileMenu();
             });
     
-                        // Cart functionality
+            // Cart functionality
             const desktopCart = document.getElementById('desktopCart');
             const mobileCart = document.getElementById('mobileCart');
             const mobileCartHeader = document.getElementById('mobileCartHeader');

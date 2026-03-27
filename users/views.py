@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
-from .forms import CustomUserCreationForm, CustomUserLoginForm, \
-    CustomUserUpdateForm
+from .forms import CustomUserCreationForm, CustomUserLoginForm, CustomUserUpdateForm
 from .models import CustomUser
 from django.contrib import messages
 from main.models import Product
@@ -30,9 +29,9 @@ def login_view(request):
             user = form.get_user()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('main:index')
-        else:
-            form = CustomUserLoginForm()
-        return render(request, 'users/login.html', {'form': form})
+    else:
+        form = CustomUserLoginForm()
+    return render(request, 'users/login.html', {'form': form})
     
 
 @login_required(login_url='/users/login')
@@ -64,13 +63,21 @@ def account_details(request):
 
 @login_required(login_url='/users/login')
 def edit_account_details(request):
+    """
+    Возвращает форму редактирования аккаунта (partial) для htmx.
+    """
     form = CustomUserUpdateForm(instance=request.user)
-    return TemplateResponse(request, 'users/partials/edit_account_details.html',
-                            {'user': request.user, 'form': form})
+    return TemplateResponse(request, 'users/partials/edit_account_details.html', {
+        'user': request.user,
+        'form': form
+    })
 
 
 @login_required(login_url='/users/login')
 def update_account_details(request):
+    """
+    Обновляет данные пользователя через POST.
+    """
     if request.method == 'POST':
         form = CustomUserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -84,8 +91,9 @@ def update_account_details(request):
             return TemplateResponse(request, 'users/partials/account_details.html', {'user': updated_user})
         else:
             return TemplateResponse(request, 'users/partials/edit_account_details.html', {'user': request.user, 'form': form})
+    
     if request.headers.get('HX-Request'):
-        return HttpResponse(headers={'HX-Redirect': reverse('user:profile')})
+        return HttpResponse(headers={'HX-Redirect': reverse('users:profile')})
     return redirect('users:profile')
 
 
